@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ThreePlayers extends StatefulWidget {
-  const ThreePlayers({Key? key}) : super(key: key);
+class FourPlayers extends StatefulWidget {
+  const FourPlayers({Key? key}) : super(key: key);
 
   @override
-  State<ThreePlayers> createState() => _ThreePlayersState();
+  State<FourPlayers> createState() => _FourPlayersState();
 }
 
-class _ThreePlayersState extends State<ThreePlayers> {
+class _FourPlayersState extends State<FourPlayers> {
   int _placar1 = 0;
   int _placar2 = 0;
 
@@ -26,6 +26,7 @@ class _ThreePlayersState extends State<ThreePlayers> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      
       theme:
           ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
       home: Scaffold(

@@ -1,4 +1,4 @@
-import 'package:domino_app/screens/three_players.dart';
+import 'package:domino_app/screens/four_players.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,11 +10,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+       routes: {
+        '/fourplayers': (context) => FourPlayers(),
+        // '/': (context) => MyHomePage(title: 'Contador de Dominó'),
+      },
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ThreePlayers(),
+      home: const MyHomePage(title: "Contador de Dominó",),
     );
   }
 }
@@ -41,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
       theme:
           ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
+     
       home: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -73,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: OutlinedButton.icon(
                         onPressed: () {
                           // Respond to button press
+                          Navigator.pushNamed(context, '/fourplayers');
                         },
                         icon: Icon(Icons.add, size: 18),
                         label: Text("4",  style: TextStyle(fontSize: 20)),
