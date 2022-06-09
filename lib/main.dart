@@ -1,5 +1,7 @@
 import 'package:domino_app/screens/four_players.dart';
 import 'package:flutter/material.dart';
+import 'package:link_text/link_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,16 +12,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-       routes: {
-        '/fourplayers': (context) => FourPlayers(),
-        // '/': (context) => MyHomePage(title: 'Contador de Dominó'),
-      },
-      title: 'Flutter Demo',
+      // initialRoute: '/',
+      title: 'Marcador de Dominó',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: "Contador de Dominó",),
+      home: const MyHomePage(
+        title: "Marcador",
+      ),
+      // routes: {
+      //   '/fourplayers': (context) => FourPlayers(),
+      //   // '/': (context) => MyHomePage(title: 'Contador de Dominó'),
+      // },
     );
   }
 }
@@ -35,18 +39,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+final Uri _url = Uri.parse('https://www.instagram.com/brenongr/');
+
+
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
   }
+  void _launchUrl() async {
+  if (!await launchUrl(_url)) throw 'Could not launch $_url';
+}
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
           ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
-     
       home: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -64,25 +73,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: OutlinedButton.icon(
+                    //     onPressed: () {
+                    //       // Respond to button press
+                    //     },
+                    //     icon: Icon(Icons.add, size: 18),
+                    //     label: Text("3", style: TextStyle(fontSize: 20)),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: OutlinedButton.icon(
                         onPressed: () {
                           // Respond to button press
+                          // Navigator.pushNamed(context, '/fourplayers');
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const FourPlayers()));
                         },
-                        icon: Icon(Icons.add, size: 18),
-                        label: Text("3",  style: TextStyle(fontSize: 20)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Respond to button press
-                          Navigator.pushNamed(context, '/fourplayers');
-                        },
-                        icon: Icon(Icons.add, size: 18),
-                        label: Text("4",  style: TextStyle(fontSize: 20)),
+                        icon: Icon(Icons.person, size: 18),
+                        label: Text("4 (dupla)", style: TextStyle(fontSize: 20)),
                       ),
                     ),
                   ],
@@ -91,13 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-     
-      bottomSheet: Container(
-        height: 50,
-        child: Center(
-          child: Text('Developed by: @brenonogr'),
+        bottomSheet: Container(
+          height: 50,
+          child: Center(
+             child: ElevatedButton(onPressed:  _launchUrl, child: Text('Developed by: @brenongr')),
+          ),
         ),
-      ),
       ),
     );
   }
