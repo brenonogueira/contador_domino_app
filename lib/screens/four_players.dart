@@ -2,9 +2,16 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
+import 'package:wakelock/wakelock.dart';
 
 class FourPlayers extends StatefulWidget {
-  const FourPlayers({Key? key}) : super(key: key);
+  const FourPlayers(Key? key, this.dupla1Nome1, this.dupla1Nome2,
+      this.dupla2Nome1, this.dupla2Nome2)
+      : super(key: key);
+  final dupla1Nome1;
+  final dupla1Nome2;
+  final dupla2Nome1;
+  final dupla2Nome2;
 
   @override
   State<FourPlayers> createState() => _FourPlayersState();
@@ -18,10 +25,13 @@ class _FourPlayersState extends State<FourPlayers> {
 
   final player = AudioCache();
 
+  Object? get dupla1Nome1 => null;
+
   void _incrementPlacar1(int value) {
     setState(() {
       _placar1 += value;
     });
+
   }
 
   void _incrementPlacar2(int value) {
@@ -33,6 +43,7 @@ class _FourPlayersState extends State<FourPlayers> {
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
+    // print();
   }
 
   @override
@@ -45,18 +56,20 @@ class _FourPlayersState extends State<FourPlayers> {
 
   @override
   Widget build(BuildContext context) {
-    // print(myInterceptor);
+    Wakelock.enable();
     return MaterialApp(
       theme:
           ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: Text('Dupla 1 x Dupla 2'),
+            title: Text(
+                "${widget.dupla1Nome1.text} e ${widget.dupla1Nome2.text} vs ${widget.dupla2Nome1.text} e ${widget.dupla2Nome2.text}",
+                style: TextStyle(fontSize: 12)),
           ),
           body: WillPopScope(
             onWillPop: () async {
               bool willLeave = false;
-
               return willLeave;
             },
             child: displayText
@@ -65,7 +78,6 @@ class _FourPlayersState extends State<FourPlayers> {
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: const <Widget>[
-                          Text('Essa ação irá zerar o marcador'),
                           Text('Você realmente deseja fazer isso?'),
                         ],
                       ),
@@ -76,7 +88,13 @@ class _FourPlayersState extends State<FourPlayers> {
                         child: const Text('NÃO'),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
+                        onPressed: () => {
+                          Navigator.pop(context, 'OK'),
+                          widget.dupla1Nome1.clear(),
+                          widget.dupla1Nome2.clear(),
+                          widget.dupla2Nome1.clear(),
+                          widget.dupla2Nome2.clear()
+                        },
                         child: const Text('SIM'),
                       ),
                     ],
@@ -85,7 +103,7 @@ class _FourPlayersState extends State<FourPlayers> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 13),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -168,8 +186,9 @@ class _FourPlayersState extends State<FourPlayers> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text("Dupla 1",
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text(
+                                    "${widget.dupla1Nome1.text.toString().toUpperCase()} e ${widget.dupla1Nome2.text.toString().toUpperCase()}",
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.red)),
                               ),
@@ -177,7 +196,11 @@ class _FourPlayersState extends State<FourPlayers> {
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
                                   "${_placar1}",
-                                  style: TextStyle(fontSize: 50),
+                                  style: TextStyle(
+                                      fontSize: 50,
+                                      color: _placar1 >= 200 && _placar1 > _placar2
+                                          ? Colors.green
+                                          : Colors.white),
                                 ),
                               )
                             ],
@@ -203,7 +226,8 @@ class _FourPlayersState extends State<FourPlayers> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(4.0),
-                              child: Text("Dupla 2",
+                              child: Text(
+                                  "${widget.dupla2Nome1.text.toString().toUpperCase()} e ${widget.dupla2Nome2.text.toString().toUpperCase()}",
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.blue)),
                             ),
@@ -211,7 +235,11 @@ class _FourPlayersState extends State<FourPlayers> {
                               padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 "${_placar2}",
-                                style: TextStyle(fontSize: 50),
+                                style: TextStyle(
+                                    fontSize: 50,
+                                    color: _placar2 >= 200  && _placar2 > _placar1
+                                        ? Colors.green
+                                        : Colors.white),
                               ),
                             )
                           ],
