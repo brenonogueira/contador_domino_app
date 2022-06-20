@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(
-        title: "Marcador",
+        title: "Marcador de Dominó",
       ),
       // routes: {
       //   '/fourplayers': (context) => FourPlayers(),
@@ -254,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         icon: Icon(Icons.person, size: 18),
                         label:
-                            Text("4 (dupla)", style: TextStyle(fontSize: 20)),
+                            Text("Dupla", style: TextStyle(fontSize: 20)),
                       ),
                     ),
                   ],
